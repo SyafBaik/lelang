@@ -34,7 +34,7 @@ async function loadAuctions() {
         : 'https://via.placeholder.com/200';
 
       card.innerHTML = `
-        <img src="${imageSrc}" alt="${item.item_name || ''}" onerror="this.src='https://via.placeholder.com/200'">
+        <img class="media-img" src="${imageSrc}" alt="${item.item_name || ''}" onerror="this.src='https://via.placeholder.com/200'">
         <h3>${item.item_name || 'Tanpa nama'}</h3>
         <p>${item.description || ''}</p>
         <p class="price">Rp ${parseInt(item.starting_price || 0).toLocaleString()}</p>

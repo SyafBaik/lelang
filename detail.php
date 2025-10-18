@@ -41,9 +41,9 @@ if ($bids_res && mysqli_num_rows($bids_res) > 0) {
 </head>
 <body>
   <div class="container">
-    <div class="left">
-    <img src="<?= htmlspecialchars($item['image_url'] ?? '', ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($item['item_name'], ENT_QUOTES, 'UTF-8') ?>" onerror="this.src='https://via.placeholder.com/400'">
-    </div>
+  <div class="left">
+  <img class="media-img" src="<?= htmlspecialchars($item['image_url'] ?? '', ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($item['item_name'], ENT_QUOTES, 'UTF-8') ?>" onerror="this.src='https://via.placeholder.com/400'">
+  </div>
 
     <div class="right">
       <h2><?= htmlspecialchars($item['item_name'], ENT_QUOTES, 'UTF-8') ?></h2>
