@@ -9,7 +9,15 @@ header('Content-Type: application/json; charset=utf-8');
 // error_reporting(E_ALL);
 // ini_set('display_errors', 1);
 
-if (!isset($conn) || !$conn) {
+// ensure using $koneksi (db.php defines $koneksi)
+if (!isset($koneksi) || !$koneksi) {
+    // fallback if another var name used
+    if (isset($conn) && $conn) {
+        $koneksi = $conn;
+    }
+}
+
+if (!isset($koneksi) || !$koneksi) {
     http_response_code(500);
     echo json_encode(["success" => false, "message" => "Koneksi database tidak tersedia."]);
     exit;

@@ -78,7 +78,7 @@ header p{ margin:6px 0 0; opacity:0.95; }
   min-height:300px;
 }
 .card:hover{ transform:translateY(-6px); box-shadow:0 12px 30px rgba(15,23,42,0.08); }
-.card img{ width:100%; height:180px; object-fit:cover; border-radius:8px; display:block; margin-bottom:10px; }
+.card img{ width:100%; height:150px; object-fit:cover; border-radius:8px; display:block; margin-bottom:10px; }
 .card h3{ margin:6px 0 4px; font-size:16px; color:#0f172a; }
 .card p{ color:var(--muted); font-size:13px; margin:0 0 8px; line-height:1.3; flex:1; }
 
@@ -119,22 +119,6 @@ header p{ margin:6px 0 0; opacity:0.95; }
 }
 .detail-container img{ width:100%; border-radius:10px; box-shadow:0 8px 24px rgba(2,6,23,0.06); }
 
-/* Ensure detail and other images use the same sizing and cropping behavior */
-.media-img {
-  width: 100%;
-  height: 180px; /* match .card img height for uniformity */
-  object-fit: cover;
-  border-radius: 8px;
-  display: block;
-}
-
-/* Apply media-img to detail left image if present */
-.left img,
-.detail-container img {
-  height: 180px;
-  object-fit: cover;
-}
-
 /* Forms */
 form input[type="text"], form input[type="number"], form input[type="datetime-local"], form textarea, form input[type="file"]{
   width:100%; padding:10px 12px; border:1px solid #e6eef8; border-radius:8px; margin-top:6px;
@@ -153,6 +137,20 @@ tr:hover td{ background:linear-gradient(90deg, rgba(76,110,245,0.03), rgba(62,18
 .back{ color:var(--primary); text-decoration:none; }
 .success{ color:green; }
 .errors ul{ margin:0; padding-left:18px; color:#b91c1c; }
+
+/* Bids UI */
+.bids { background: var(--card); padding:16px; border-radius:12px; box-shadow:0 6px 18px rgba(15,23,42,0.04); }
+.bids h3 { margin-top:0; }
+.bid-item { display:flex; justify-content:space-between; padding:8px 10px; border-bottom:1px dashed #eef2ff; }
+.bid-item:last-child{ border-bottom:0; }
+.highest { display:inline-block; background:linear-gradient(90deg,var(--primary),#36b6ff); color:white; padding:6px 10px; border-radius:999px; font-weight:700; }
+
+.bid-form { background: linear-gradient(180deg,#ffffff, #fbfdff); padding:14px; border-radius:10px; box-shadow: inset 0 1px 0 rgba(255,255,255,0.6); }
+.bid-form .row { display:flex; gap:8px; align-items:center; }
+.bid-form input[type="number"]{ max-width:200px; }
+.bid-msg { margin-top:8px; font-size:14px; }
+.bid-msg.success { color:var(--accent); }
+.bid-msg.error { color:#b91c1c; }
 
 /* Responsive tweaks */
 @media (max-width:800px){
