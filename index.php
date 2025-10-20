@@ -26,9 +26,9 @@ session_start();
 
     <?php if (!empty($_SESSION['admin'])): ?>
       <a href="admin/tambah_barang.php" class="admin-btn">Tambah Barang</a>
-      <a href="admin/logout.php" class="admin-btn">Logout Admin</a>
-    <?php else: ?>
       <a href="admin/login.php" class="admin-btn">Login Admin</a>
+    <?php else: ?>
+      <a href="admin/logout.php" class="admin-btn">Logout Admin</a>
     <?php endif; ?>
   </div>
 

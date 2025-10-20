@@ -8,4 +8,3 @@
   <?php else: ?>
     <a href="admin/login.php" class="admin-btn">Login Admin</a>
   <?php endif; ?>
-// ...existing code...
