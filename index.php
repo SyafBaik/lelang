@@ -15,12 +15,22 @@ session_start();
 <body>
   <header>
     <h1> IndoLang</h1>
-  <?php if (isset($_SESSION['admin'])): ?>
-  <a href="admin/login.php" class="admin-btn">Login <?= htmlspecialchars($_SESSION['admin'], ENT_QUOTES, 'UTF-8') ?></a>
-  <a href="admin/tambah_barang.php" class="admin-btn">Tambah Barang</a>
-<?php else: ?>
-  <a href="admin/logout.php" class="admin-btn">Logout Admin</a>
-<?php endif; ?>
+  <div style="display:flex;gap:8px;justify-content:flex-end;align-items:center;">
+    <?php if (!empty($_SESSION['user_id'])): ?>
+      <span style="color:white;opacity:0.95;">Halo, <?= htmlspecialchars($_SESSION['user_name'], ENT_QUOTES, 'UTF-8') ?></span>
+      <a href="user_logout.php" class="admin-btn">Logout</a>
+    <?php else: ?>
+      <a href="user_login.php" class="admin-btn">Login</a>
+      <a href="user_register.php" class="admin-btn">Daftar</a>
+    <?php endif; ?>
+
+    <?php if (!empty($_SESSION['admin'])): ?>
+      <a href="admin/tambah_barang.php" class="admin-btn">Tambah Barang</a>
+      <a href="admin/logout.php" class="admin-btn">Logout Admin</a>
+    <?php else: ?>
+      <a href="admin/login.php" class="admin-btn">Login Admin</a>
+    <?php endif; ?>
+  </div>
 
     <p>Daftar Barang Lelang</p>
 </header>
