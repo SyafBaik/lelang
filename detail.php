@@ -47,7 +47,16 @@ if (!empty($bids)) {
 <body>
   <div class="container">
   <div class="left">
-  <img class="media-img" src="<?= htmlspecialchars($item['image_url'] ?? '', ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($item['item_name'], ENT_QUOTES, 'UTF-8') ?>" onerror="this.src='https://via.placeholder.com/400'">
+    <?php
+      // prefer local image filename in `image` column, else fall back to image_url
+      $imgSrc = '';
+      if (!empty($item['image'])) {
+        $imgSrc = 'uploads/' . rawurlencode($item['image']);
+      } elseif (!empty($item['image_url'])) {
+        $imgSrc = htmlspecialchars($item['image_url'], ENT_QUOTES, 'UTF-8');
+      }
+    ?>
+    <img class="media-img" src="<?= $imgSrc ?: 'https://via.placeholder.com/400' ?>" alt="<?= htmlspecialchars($item['item_name'], ENT_QUOTES, 'UTF-8') ?>" onerror="this.src='https://via.placeholder.com/400'">
   </div>
 
     <div class="right">

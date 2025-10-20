@@ -10,7 +10,19 @@ if (!isset($koneksi) || !$koneksi) {
 
 mysqli_set_charset($koneksi, 'utf8mb4');
 
-$result = mysqli_query($koneksi, "SELECT id, item_name, description, starting_price, end_time, image_url FROM auctions ORDER BY id DESC");
+// detect if table has a dedicated 'image' column (local filename)
+$hasImageCol = false;
+$colCheck = mysqli_query($koneksi, "SHOW COLUMNS FROM `auctions` LIKE 'image'");
+if ($colCheck && mysqli_num_rows($colCheck) > 0) $hasImageCol = true;
+
+$selectCols = "id, item_name, description, starting_price, end_time";
+if ($hasImageCol) {
+  $selectCols .= ", image";
+} else {
+  $selectCols .= ", image_url"; // fallback if no image column
+}
+
+$result = mysqli_query($koneksi, "SELECT $selectCols FROM auctions ORDER BY id DESC");
 if ($result === false) {
     http_response_code(500);
     echo json_encode(['error' => 'Query failed', 'detail' => mysqli_error($koneksi)]);

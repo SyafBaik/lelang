@@ -26,12 +26,13 @@ async function loadAuctions() {
 
       const endTime = item.end_time ? Date.parse(item.end_time) : NaN;
 
-      // jika image_url adalah filename (bukan URL), ambil dari folder uploads/
-      const imageSrc = item.image_url
-        ? (item.image_url.startsWith('http') || item.image_url.startsWith('/')
-           ? item.image_url
-           : `uploads/${encodeURIComponent(item.image_url)}`)
-        : 'https://via.placeholder.com/200';
+    // prefer local file column `image` (or `image_file`) stored in uploads/; fallback to image_url or placeholder
+    const localFile = item.image || item.image_file || null;
+    const imageSrc = localFile
+      ? (`uploads/${encodeURIComponent(localFile)}`)
+      : (item.image_url
+        ? (item.image_url.startsWith('http') || item.image_url.startsWith('/') ? item.image_url : `uploads/${encodeURIComponent(item.image_url)}`)
+        : 'https://via.placeholder.com/200');
 
       card.innerHTML = `
         <img class="media-img" src="${imageSrc}" alt="${item.item_name || ''}" onerror="this.src='https://via.placeholder.com/200'">
