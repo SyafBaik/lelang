@@ -17,7 +17,7 @@ $errors = [];
 $success = '';
 
 // Ambil data item saat ini
-if ($stmt = mysqli_prepare($koneksi, "SELECT item_name, description, starting_price, end_time, image_url FROM auctions WHERE id = ?")) {
+if ($stmt = mysqli_prepare($koneksi, "SELECT item_name, description, starting_price, end_time, image FROM auctions WHERE id = ?")) {
     mysqli_stmt_bind_param($stmt, 'i', $id);
     mysqli_stmt_execute($stmt);
     mysqli_stmt_bind_result($stmt, $item_name_db, $description_db, $starting_price_db, $end_time_db, $image_db);
@@ -84,19 +84,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if (empty($errors)) {
-        $sql = "UPDATE auctions SET item_name = ?, description = ?, starting_price = ?, end_time = ?, image_url = ? WHERE id = ?";
+      $sql = "UPDATE auctions SET item_name = ?, description = ?, starting_price = ?, end_time = ?, image = ? WHERE id = ?";
         if ($stmt = mysqli_prepare($koneksi, $sql)) {
             mysqli_stmt_bind_param($stmt, 'ssdssi', $item_name, $description, $starting_price, $end_time, $newImageName, $id);
             $ok = mysqli_stmt_execute($stmt);
             $affected = mysqli_stmt_affected_rows($stmt);
             mysqli_stmt_close($stmt);
 
-            if ($ok) {
-                // jika gambar baru menggantikan yang lama, hapus file lama
-                if (!empty($_FILES['image']['name']) && $image_db && $image_db !== $newImageName) {
-                    $oldPath = __DIR__ . '/../uploads/' . basename($image_db);
-                    if (is_file($oldPath)) @unlink($oldPath);
-                }
+      if ($ok) {
+        // jika gambar baru menggantikan yang lama, hapus file lama
+        if (!empty($_FILES['image']['name']) && $image_db && $image_db !== $newImageName) {
+          $oldPath = __DIR__ . '/../uploads/' . basename($image_db);
+          if (is_file($oldPath)) @unlink($oldPath);
+        }
                 $success = 'Barang berhasil diperbarui.';
                 header('Location: index.php?updated=1');
                 exit;

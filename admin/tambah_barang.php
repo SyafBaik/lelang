@@ -58,10 +58,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
-    if (empty($errors)) {
-        $sql = "INSERT INTO auctions (item_name, description, starting_price, end_time, image_url) VALUES (?, ?, ?, ?, ?)";
-        if ($stmt = mysqli_prepare($koneksi, $sql)) {
-            mysqli_stmt_bind_param($stmt, 'ssdss', $item_name, $description, $starting_price, $end_time, $uploadedName);
+  if (empty($errors)) {
+    $sql = "INSERT INTO auctions (item_name, description, starting_price, end_time, image) VALUES (?, ?, ?, ?, ?)";
+    if ($stmt = mysqli_prepare($koneksi, $sql)) {
+      mysqli_stmt_bind_param($stmt, 'ssdss', $item_name, $description, $starting_price, $end_time, $uploadedName);
             $ok = mysqli_stmt_execute($stmt);
             mysqli_stmt_close($stmt);
             if ($ok) {
