@@ -108,10 +108,65 @@ $query = mysqli_query($koneksi, "SELECT * FROM auctions ORDER BY id DESC");
             
             <td>
                 <a href="edit_barang.php?id=<?= $row['id'] ?>" class="edit">Edit</a>
-                <a href="hapus_barang.php?id=<?= $row['id'] ?>" class="hapus" onclick="return confirm('Yakin ingin hapus barang ini?')">Hapus</a>
+                                <a href="hapus_barang.php?id=<?= $row['id'] ?>" class="hapus delete-link" data-id="<?= $row['id'] ?>">Hapus</a>
             </td>
         </tr>
         <?php endwhile; ?>
     </table>
+    
+        <!-- Modal konfirmasi custom -->
+        <div id="confirmModal" style="display:none; position:fixed; left:0; right:0; top:0; bottom:0; background:rgba(0,0,0,0.5); align-items:center; justify-content:center;">
+            <div style="background:#fff; padding:20px; border-radius:8px; max-width:480px; margin:0 auto;">
+                <h3>Konfirmasi Hapus</h3>
+                <p id="confirmText">Yakin ingin menghapus barang ini?</p>
+                <label style="display:block; margin:8px 0;"><input type="checkbox" id="dontAskAgain"> Jangan ingatkan lagi</label>
+                <div style="text-align:right; margin-top:12px;">
+                    <button id="confirmCancel" style="margin-right:8px;">Batal</button>
+                    <button id="confirmOk" style="background:#c82333;color:#fff;padding:8px 12px;border:0;border-radius:4px;">Ya, Hapus</button>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            (function(){
+                const modal = document.getElementById('confirmModal');
+                const confirmText = document.getElementById('confirmText');
+                const dontAsk = document.getElementById('dontAskAgain');
+                const confirmOk = document.getElementById('confirmOk');
+                const confirmCancel = document.getElementById('confirmCancel');
+                let currentHref = null;
+
+                function shouldSkip() {
+                    try { return localStorage.getItem('skipDeleteConfirm') === '1'; } catch (e) { return false; }
+                }
+
+                function showModalFor(href, text) {
+                    currentHref = href;
+                    confirmText.textContent = text || 'Yakin ingin menghapus barang ini?';
+                    dontAsk.checked = false;
+                    modal.style.display = 'flex';
+                }
+
+                document.querySelectorAll('.delete-link').forEach(a => {
+                    a.addEventListener('click', function(e){
+                        const href = this.getAttribute('href');
+                        const id = this.dataset.id || '';
+                        if (shouldSkip()) {
+                            // langsung lanjutkan
+                            window.location.href = href;
+                            return;
+                        }
+                        e.preventDefault();
+                        showModalFor(href, 'Yakin ingin menghapus barang ID ' + id + '?');
+                    });
+                });
+
+                confirmCancel.addEventListener('click', function(){ modal.style.display = 'none'; currentHref = null; });
+                confirmOk.addEventListener('click', function(){
+                    try { if (dontAsk.checked) localStorage.setItem('skipDeleteConfirm','1'); } catch(e){}
+                    if (currentHref) window.location.href = currentHref;
+                });
+            })();
+        </script>
 </body>
 </html>
