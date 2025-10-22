@@ -1,4 +1,6 @@
 <?php
+// Mulai session jika belum
+if (session_status() === PHP_SESSION_NONE) session_start();
 // ...existing code...
 include 'db.php';
 
@@ -69,15 +71,19 @@ if (!empty($bids)) {
       </div>
       <p><strong>Berakhir:</strong> <?= htmlspecialchars($item['end_time'], ENT_QUOTES, 'UTF-8') ?></p>
       <div class="bid-form" style="margin-top:12px;">
+        <?php if (!empty($_SESSION['user_name'])): ?>
         <form id="bidForm" method="post">
           <input type="hidden" name="item_id" id="item_id" value="<?= (int)$item['id']; ?>">
           <div class="row">
-            <!-- Nama penawar diambil otomatis dari session, input dihapus -->
+            <!-- Nama penawar diambil otomatis dari session -->
             <input type="number" id="bid_amount" name="bid_amount" placeholder="Tawaran (Rp)" required step="1">
             <button type="submit" id="bid-btn">Tawar</button>
           </div>
           <div class="bid-msg" id="bidMsg"></div>
         </form>
+        <?php else: ?>
+          <p>Silakan <a href="user_login.php">login</a> untuk menawar.</p>
+        <?php endif; ?>
       </div>
 
       <a href="index.php" class="back">← Kembali</a>
