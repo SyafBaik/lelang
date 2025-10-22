@@ -69,18 +69,15 @@ if (!empty($bids)) {
       </div>
       <p><strong>Berakhir:</strong> <?= htmlspecialchars($item['end_time'], ENT_QUOTES, 'UTF-8') ?></p>
       <div class="bid-form" style="margin-top:12px;">
-            <input type="hidden" name="item_id" id="item_id" value="<?= (int)$item['id']; ?>">
-            <div class="row">
-              <input type="text" id="bidder_name" name="bidder_name" placeholder="Nama Anda" required value="<?= isset(
-              
-              
-                $_SESSION['user_name']
-              ) ? htmlspecialchars($_SESSION['user_name'], ENT_QUOTES, 'UTF-8') : '' ?>">
-              <input type="number" id="bid_amount" name="bid_amount" placeholder="Tawaran (Rp)" required step="1">
-              <button type="submit" id="bid-btn">Tawar</button>
-            </div>
-            <div class="bid-msg" id="bidMsg"></div>
-          </form>
+        <form id="bidForm" method="post">
+          <input type="hidden" name="item_id" id="item_id" value="<?= (int)$item['id']; ?>">
+          <div class="row">
+            <input type="text" id="bidder_name" name="bidder_name" placeholder="Nama Anda" required value="<?= isset($_SESSION['user_name']) ? htmlspecialchars($_SESSION['user_name'], ENT_QUOTES, 'UTF-8') : '' ?>">
+            <input type="number" id="bid_amount" name="bid_amount" placeholder="Tawaran (Rp)" required step="1">
+            <button type="submit" id="bid-btn">Tawar</button>
+          </div>
+          <div class="bid-msg" id="bidMsg"></div>
+        </form>
       </div>
 
       <a href="index.php" class="back">← Kembali</a>
