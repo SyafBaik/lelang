@@ -72,7 +72,7 @@ if (!empty($bids)) {
         <form id="bidForm" method="post">
           <input type="hidden" name="item_id" id="item_id" value="<?= (int)$item['id']; ?>">
           <div class="row">
-            <input type="text" id="bidder_name" name="bidder_name" placeholder="Nama Anda" required value="<?= isset($_SESSION['user_name']) ? htmlspecialchars($_SESSION['user_name'], ENT_QUOTES, 'UTF-8') : '' ?>">
+            <!-- Nama penawar diambil otomatis dari session, input dihapus -->
             <input type="number" id="bid_amount" name="bid_amount" placeholder="Tawaran (Rp)" required step="1">
             <button type="submit" id="bid-btn">Tawar</button>
           </div>
@@ -138,11 +138,10 @@ if (!empty($bids)) {
     timer = setInterval(updateCountdown, 1000);
     updateCountdown();
 
-    if (bidForm) {
-      const bidInput = document.getElementById('bid_amount');
-      const bidderInput = document.getElementById('bidder_name');
-      const bidMsg = document.getElementById('bidMsg');
-      const highestEl = document.querySelector('.highest');
+  if (bidForm) {
+  const bidInput = document.getElementById('bid_amount');
+  const bidMsg = document.getElementById('bidMsg');
+  const highestEl = document.querySelector('.highest');
 
       // set minimum bid: highest_bid + 1 or starting price
       const base = <?= json_encode((float)($highest_bid > 0 ? $highest_bid : ($item['starting_price'] ?? 0))); ?>;
@@ -153,10 +152,7 @@ if (!empty($bids)) {
 
       bidForm.addEventListener('submit', async function(e) {
         e.preventDefault();
-        if (!bidderInput.value.trim()) {
-          if (bidMsg) { bidMsg.className = 'bid-msg error'; bidMsg.textContent = 'Nama wajib diisi.'; }
-          return;
-        }
+        // pastikan user sudah login (server akan memeriksa ulang)
         const fd = new FormData(bidForm);
         bidBtn.disabled = true;
         bidBtn.textContent = 'Mengirim...';
@@ -164,6 +160,12 @@ if (!empty($bids)) {
         try {
           const res = await fetch('place_bid.php', { method: 'POST', body: fd });
           const json = await res.json();
+          if (json && json.login_required) {
+            if (bidMsg) { bidMsg.className = 'bid-msg error'; bidMsg.textContent = 'Silakan login terlebih dahulu untuk menawar.'; }
+            bidBtn.disabled = false;
+            bidBtn.textContent = 'Tawar';
+            return;
+          }
           if (json.success) {
             if (bidMsg) { bidMsg.className = 'bid-msg success'; bidMsg.textContent = json.message || 'Tawaran berhasil.'; }
             // update highest display and bids list by reloading or optimistic update

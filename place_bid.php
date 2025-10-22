@@ -23,9 +23,21 @@ if (!isset($koneksi) || !$koneksi) {
     exit;
 }
 
+session_start();
+
 $item_id = isset($_POST['item_id']) ? intval($_POST['item_id']) : 0;
-$bidder_name = trim($_POST['bidder_name'] ?? '');
 $bid_amount = (float)($_POST['bid_amount'] ?? 0);
+
+// Ambil nama penawar dari session jika ada
+$bidder_name = '';
+if (isset($_SESSION['user_name']) && $_SESSION['user_name']) {
+    $bidder_name = trim($_SESSION['user_name']);
+} else {
+    // Jika tidak login, beri tahu frontend
+    http_response_code(401);
+    echo json_encode(["success" => false, "login_required" => true, "message" => "Login diperlukan."]);
+    exit;
+}
 
 // Validasi input dasar
 if ($item_id <= 0 || $bidder_name === '' || $bid_amount <= 0) {
