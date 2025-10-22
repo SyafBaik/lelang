@@ -104,7 +104,17 @@ $query = mysqli_query($koneksi, "SELECT * FROM auctions ORDER BY id DESC");
             <td><?= $row['item_name'] ?></td>
             <td>Rp<?= number_format($row['starting_price'], 0, ',', '.') ?></td>
             <td><?= $row['description'] ?></td>
-            <td><img src="../uploads/<?= $row['image_url'] ?>" width="100"></td>
+                        <td>
+                                <?php
+                                    $img = '';
+                                    if (!empty($row['image'])) {
+                                        $img = '../uploads/' . rawurlencode($row['image']);
+                                    } elseif (!empty($row['image_url'])) {
+                                        $img = '../uploads/' . rawurlencode($row['image_url']);
+                                    }
+                                ?>
+                                <img src="<?= $img ?: 'https://via.placeholder.com/100' ?>" width="100" onerror="this.src='https://via.placeholder.com/100'">
+                        </td>
             
             <td>
                 <a href="edit_barang.php?id=<?= $row['id'] ?>" class="edit">Edit</a>
